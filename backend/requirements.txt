@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+websockets
+openai
+pandas
+numpy
+pydantic
+python-dotenv
+requests

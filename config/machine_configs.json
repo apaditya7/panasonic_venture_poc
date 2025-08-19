@@ -1,0 +1,40 @@
+{
+  "machines": [
+    {
+      "id": "injection_molding_001",
+      "name": "Injection Molding Machine A",
+      "type": "injection_molding",
+      "normal_ranges": {
+        "temperature": {"min": 180, "max": 220},
+        "pressure": {"min": 1200, "max": 1500},
+        "vibration": {"min": 0.1, "max": 0.3},
+        "rpm": {"min": 150, "max": 200},
+        "power_consumption": {"min": 45, "max": 65}
+      }
+    },
+    {
+      "id": "cnc_mill_002", 
+      "name": "CNC Milling Machine B",
+      "type": "cnc_mill",
+      "normal_ranges": {
+        "temperature": {"min": 25, "max": 45},
+        "pressure": {"min": 800, "max": 1200},
+        "vibration": {"min": 0.05, "max": 0.2},
+        "rpm": {"min": 800, "max": 1200},
+        "power_consumption": {"min": 15, "max": 25}
+      }
+    },
+    {
+      "id": "conveyor_003",
+      "name": "Conveyor System C", 
+      "type": "conveyor",
+      "normal_ranges": {
+        "temperature": {"min": 20, "max": 35},
+        "pressure": {"min": 0, "max": 50},
+        "vibration": {"min": 0.02, "max": 0.1},
+        "rpm": {"min": 30, "max": 60},
+        "power_consumption": {"min": 5, "max": 12}
+      }
+    }
+  ]
+}
