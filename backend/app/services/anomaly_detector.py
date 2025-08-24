@@ -4,12 +4,14 @@ from typing import List, Optional
 from openai import OpenAI
 from models.machine import Machine, MachineData
 from models.anomaly import AnomalyAlert
+from services.llm_service import LLMService
 import uuid
 
 class AnomalyDetector:
     def __init__(self):
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.model = "gpt-4o-mini"
+        self.llm_service = LLMService()
         
     def calculate_anomaly_score(self, machine: Machine, data: MachineData) -> float:
         ranges = machine.normal_ranges
@@ -48,7 +50,7 @@ class AnomalyDetector:
             
         try:
             prompt = f"""
-            Analyze this industrial machine anomaly:
+            Analyze this industrial machine anomaly and provide a structured response:
             
             Machine: {machine.name} ({machine.type.value})
             Current readings:
@@ -60,29 +62,37 @@ class AnomalyDetector:
             
             Anomaly Score: {anomaly_score:.2f}/1.0
             
-            Provide a brief analysis (2-3 sentences) of:
-            1. What might be causing this anomaly
-            2. Potential risks or consequences
-            3. Recommended immediate actions
+            Please provide your analysis in this format:
             
-            Keep it concise and actionable for maintenance staff.
+            **Issue**: [Brief description of the problem]
+            
+            **Cause**: [Most likely cause of the anomaly]
+            
+            **Risk**: [Potential consequences if not addressed]
+            
+            **Action**: [Immediate recommended actions]
+            
+            Keep each section to 1-2 sentences maximum.
             """
             
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "You are an expert industrial maintenance engineer with deep knowledge of manufacturing equipment. Provide clear, actionable insights about machine anomalies."},
+                    {"role": "system", "content": "You are an expert industrial maintenance engineer. Provide clear, structured analysis using the exact format requested."},
                     {"role": "user", "content": prompt}
                 ],
-                max_completion_tokens=200,
+                max_tokens=200,
+                temperature=0.3
             )
-            print(response)
             
-            return response.choices[0].message.content.strip()
+            # Format the response for better readability
+            raw_content = response.choices[0].message.content.strip()
+            cleaned_content = self.llm_service.clean_text_formatting(raw_content)
+            return cleaned_content
             
         except Exception as e:
             print(f"Error in AI analysis: {e}")
-            return f"Anomaly detected with score {anomaly_score:.2f}. Manual inspection recommended."
+            return f"**Issue**: Anomaly detected with score {anomaly_score:.2f}\n**Action**: Manual inspection recommended."
     
     def create_anomaly_alert(self, machine: Machine, data: MachineData, 
                            anomaly_score: float, ai_analysis: Optional[str] = None) -> Optional[AnomalyAlert]:
