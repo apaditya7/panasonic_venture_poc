@@ -4,6 +4,12 @@
 
 This Proof of Concept (POC) demonstrates an intelligent industrial machine monitoring system that combines IoT sensor data with Large Language Model (LLM) powered insights to revolutionize manufacturing operations. The system transforms raw machine data into actionable, natural language insights that operators can easily understand and act upon.
 
+## Demo Link
+[![Demo Video](https://img.youtube.com/vi/bdl5vDFIib0/0.jpg)](https://youtu.be/bdl5vDFIib0)
+
+
+[Link](https://img.youtube.com/vi/bdl5vDFIib0/0.jpg)
+
 ## Our Solution Approach
 
 ### 1. **LLM-Powered Contextual Intelligence**
